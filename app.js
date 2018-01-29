@@ -3,6 +3,7 @@ const app = express()
 var path = require('path');
 var fs = require('fs');
 var markdown = require('marked')
+var md2pug = new(require('markdown-to-pug'))();
 app.set("view engine", "pug")
 app.set("views",path.join(__dirname,"views"));
 app.get('/:id', (req, res) => {
@@ -11,10 +12,10 @@ app.get('/:id', (req, res) => {
     res.status(404).send('Page not found');
     }
     else {
-        console.log(content)
-        const pugContent = marked(content)
-        console.log(pugContent)
-        res.render('template',{content:pugContent});
+        const pugContent = md2pug.render(content)
+        console.log("content",content)
+        res.render('template',{ content: pugContent });
+        console.log("pug content",pugContent);
     }
 });
 });
